@@ -24,9 +24,9 @@ def auto_deploy():
         # Проверяем, есть ли реально изменения, чтобы не плодить пустые коммиты
         status = subprocess.check_output(["git", "status", "--porcelain"]).decode()
         if status:
-            subprocess.run(["git", "commit", "-m", "pro-update: expensive style & logic"], check=True)
+            subprocess.run(["git", "commit", "-m", "Update"], check=True)
             subprocess.run(["git", "push", "origin", "main"], check=True)
-            print("✅ GitHub обновлен! Твой S23 Ultra увидит новый дизайн через минуту.")
+            print("✅ Готово!")
         else:
             print("💤 Изменений в файлах не найдено, пропускаю пуш.")
     except Exception as e:
