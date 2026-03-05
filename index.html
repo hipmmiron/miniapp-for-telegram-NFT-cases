@@ -1,3 +1,4 @@
+'''material you'''
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -6,102 +7,169 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --gold: linear-gradient(135deg, #d4af37 0%, #f9f295 50%, #b38728 100%);
-            --dark-bg: #0a0a0a;
-            --card-bg: #161616;
-            --text: #e0e0e0;
+            --gold: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --dark-bg: #000000;
+            --card-bg: #121212;
+            --accent: #d4af37;
+            --text: #ffffff;
+            --glass: rgba(255, 255, 255, 0.05);
         }
+
+        /* Центрирование на ПК, фуллскрин на телефоне */
         body {
             background-color: var(--dark-bg);
             color: var(--text);
-            font-family: 'Inter', -apple-system, sans-serif;
-            margin: 0; padding: 20px;
-            display: flex; flex-direction: column; align-items: center;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0; padding: 0;
+            display: flex; justify-content: center;
         }
-        .header { margin-bottom: 30px; text-align: center; }
-        .header h1 { 
-            background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            font-size: 28px; text-transform: uppercase; letter-spacing: 2px;
-        }
-        .container {
-            width: 100%; max-width: 600px;
-            display: grid; gap: 20px;
-        }
-        .case-card {
+
+        .app-wrapper {
+            width: 100%;
+            max-width: 480px; /* Размер типичного телефона */
+            min-height: 100vh;
             background: var(--card-bg);
-            border: 1px solid #2a2a2a;
-            border-radius: 16px;
-            padding: 20px;
-            display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: transform 0.2s, border-color 0.2s;
-            cursor: pointer;
+            position: relative;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.1);
+            display: flex; flex-direction: column;
         }
-        .case-card:active { transform: scale(0.97); border-color: #d4af37; }
-        .case-info h3 { margin: 0; font-size: 20px; color: #fff; }
-        .case-info p { margin: 5px 0 0; font-size: 13px; color: #777; }
-        .price-badge {
+
+        header {
+            padding: 30px 20px;
+            text-align: center;
+            background: linear-gradient(to bottom, #1a1a1a, var(--card-bg));
+        }
+
+        h1 {
             background: var(--gold);
-            color: #000;
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-weight: 800;
-            font-size: 14px;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 32px; margin: 0;
+            letter-spacing: 3px; font-weight: 900;
         }
-        /* Стили для десктопа */
-        @media (min-width: 768px) {
-            .container { grid-template-columns: 1fr 1fr; max-width: 900px; }
-            .header h1 { font-size: 40px; }
+
+        /* Табы */
+        .tabs {
+            display: flex; justify-content: space-around;
+            background: var(--glass);
+            padding: 10px; margin: 10px 20px;
+            border-radius: 15px;
         }
+
+        .tab-btn {
+            color: #888; border: none; background: none;
+            padding: 10px 20px; font-size: 14px; cursor: pointer;
+            transition: 0.3s; font-weight: bold;
+        }
+
+        .tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
+
+        .content-section { display: none; padding: 20px; flex-grow: 1; }
+        .content-section.active { display: block; }
+
+        /* Кейсы и Магазин */
+        .grid-item {
+            background: var(--glass);
+            border: 1px solid #222;
+            border-radius: 20px;
+            padding: 20px; margin-bottom: 15px;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: 0.2s;
+        }
+
+        .grid-item:active { transform: scale(0.98); background: rgba(255,255,255,0.1); }
+
+        .info h3 { margin: 0; font-size: 18px; }
+        .info p { margin: 5px 0 0; color: #666; font-size: 12px; }
+
+        .buy-btn {
+            background: var(--gold); color: #000;
+            border: none; padding: 10px 15px;
+            border-radius: 12px; font-weight: bold;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.3);
+        }
+
+        /* Магазин звезд */
+        .star-pack {
+            border: 1px solid var(--accent);
+            background: linear-gradient(45deg, #1a1a1a, #000);
+        }
+
+        .star-icon { font-size: 24px; margin-right: 15px; }
+
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Gangster Luxury</h1>
-        <p>Выбери свой путь к успеху</p>
-    </div>
+    <div class="app-wrapper">
+        <header>
+            <h1>NEBULA LUXE</h1>
+        </header>
 
-    <div class="container" id="case-list"></div>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('cases')">КЕЙСЫ</button>
+            <button class="tab-btn" onclick="showTab('shop')">МАГАЗИН</button>
+        </div>
+
+        <div id="cases" class="content-section active">
+            <div class="grid-item" onclick="openCase(10, '📦')">
+                <div class="info"><h3>Street Pack</h3><p>Шанс на хлам: 90%</p></div>
+                <div class="buy-btn">10 🪙</div>
+            </div>
+            <div class="grid-item" onclick="openCase(500, '🏎️')">
+                <div class="info"><h3>Mafia Gold</h3><p>Премиум награды</p></div>
+                <div class="buy-btn">500 🪙</div>
+            </div>
+            <div class="grid-item" onclick="openCase(5000, '🍑')">
+                <div class="info"><h3>Godfather</h3><p>NFT "Жопа кота" здесь</p></div>
+                <div class="buy-btn">5000 🪙</div>
+            </div>
+        </div>
+
+        <div id="shop" class="content-section">
+            <div class="grid-item star-pack" onclick="buyStars(7, 100)">
+                <div style="display:flex; align-items:center;">
+                    <div class="star-icon">⭐</div>
+                    <div class="info"><h3>100 Монет</h3><p>За 7 Звезд</p></div>
+                </div>
+                <div class="buy-btn">КУПИТЬ</div>
+            </div>
+            <div class="grid-item star-pack" onclick="buyStars(50, 1000)">
+                <div style="display:flex; align-items:center;">
+                    <div class="star-icon">🌟</div>
+                    <div class="info"><h3>1000 Монет</h3><p>Выгодный пак</p></div>
+                </div>
+                <div class="buy-btn">КУПИТЬ</div>
+            </div>
+        </div>
+    </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        tg.backgroundColor = '#0a0a0a';
-        tg.headerColor = '#0a0a0a';
 
-        const cases = [
-            { name: "Street Hustle", price: 10, desc: "Мелочь в карманах", icon: "📦" },
-            { name: "Ghetto Gold", price: 100, desc: "Уже серьезно", icon: "💰" },
-            { name: "Cartel Supply", price: 500, desc: "Для проверенных", icon: "🚛" },
-            { name: "Mafia Reserve", price: 2000, desc: "Высший свет", icon: "🍷" },
-            { name: "The Godfather", price: 10000, desc: "Легендарный статус", icon: "🍑" }
-        ];
-
-        function render() {
-            const list = document.getElementById('case-list');
-            list.innerHTML = cases.map(c => `
-                <div class="case-card" onclick="openCase('${c.name}', ${c.price}, '${c.icon}')">
-                    <div class="case-info">
-                        <h3>${c.name}</h3>
-                        <p>${c.desc}</p>
-                    </div>
-                    <div class="price-badge">${c.price} 🪙</div>
-                </div>
-            `).join('');
+        function showTab(id) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.currentTarget.classList.add('active');
         }
 
-        function openCase(name, price, prize) {
-            // Тут должна быть анимация прокрута, но для теста шлем данные сразу
-            if (confirm(`Открыть ${name} за ${price} монеток?`)) {
-                tg.sendData(JSON.stringify({
-                    cost: price,
-                    prize: prize
-                }));
-            }
+        function openCase(price, prize) {
+            tg.showConfirm(`Открыть кейс за ${price} 🪙?`, (ok) => {
+                if(ok) {
+                    tg.sendData(JSON.stringify({ action: 'spin', cost: price, prize: prize }));
+                }
+            });
         }
 
-        render();
+        function buyStars(stars, coins) {
+            tg.showConfirm(`Купить ${coins} монет за ${stars} ⭐?`, (ok) => {
+                if(ok) {
+                    // Отправляем данные боту, чтобы он выставил инвойс
+                    tg.sendData(JSON.stringify({ action: 'buy_stars', amount: stars }));
+                }
+            });
+        }
     </script>
 </body>
 </html>

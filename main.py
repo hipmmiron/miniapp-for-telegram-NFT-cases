@@ -73,24 +73,39 @@ async def start_cmd(message: types.Message):
     )
 
 @dp.message(F.web_app_data)
-async def web_app_data_handler(message: types.Message):
+async def handle_data(message: types.Message):
     data = json.loads(message.web_app_data.data)
-    cost = data.get('cost', 0)
-    prize = data.get('prize', '💩')
+    action = data.get('action')
     
-    balance = await get_user_balance(message.from_user.id)
-    if balance >= cost:
-        await update_balance(message.from_user.id, -cost)
-        bonus = 5000 if prize == "🍑" else 0
-        if bonus: await update_balance(message.from_user.id, bonus)
-        
-        await message.answer(
-            f"🎰 **Результат прокрутки:**\nСписано: `{cost} 🪙`\nВыпало: {prize}\n" + 
-            (f"🔥 **JACKPOT:** `{bonus} 🪙`!" if bonus else ""),
-            parse_mode="Markdown"
+    if action == 'buy_stars':
+        stars = data.get('amount')
+        await message.answer_invoice(
+            title=f"Пополнение: {stars} Stars",
+            description="Nebula Luxury Coins",
+            payload=f"pack_{stars}",
+            provider_token="",
+            currency="XTR",
+            prices=[types.LabeledPrice(label="XTR", amount=stars)]
         )
-    else:
-        await message.answer("❌ Баланс пуст. Звезды сами себя не купят.")
+    elif action == 'spin':
+        data = json.loads(message.web_app_data.data)
+        cost = data.get('cost', 0)
+        prize = data.get('prize', '💩')
+        
+        balance = await get_user_balance(message.from_user.id)
+        if balance >= cost:
+            await update_balance(message.from_user.id, -cost)
+            bonus = 5000 if prize == "🍑" else 0
+            if bonus: await update_balance(message.from_user.id, bonus)
+            
+            await message.answer(
+                f"🎰 **Результат прокрутки:**\nСписано: `{cost} 🪙`\nВыпало: {prize}\n" + 
+                (f"🔥 **JACKPOT:** `{bonus} 🪙`!" if bonus else ""),
+                parse_mode="Markdown"
+            )
+        else:
+            await message.answer("❌ Баланс пуст. Звезды сами себя не купят.")
+        pass
 
 # --- ЗАПУСК ---
 async def main():
