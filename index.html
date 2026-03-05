@@ -47,11 +47,10 @@
 
         # Пути к нормальным иконкам (Pepe, Candy, Poo, Helmet)
         ICON_POOL = [
-            {"name": "Pepe", "img": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Smileys/Frog.png"}, 
-            {"name": "Candy", "img": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Candy.png"},
-            {"name": "Poo", "img": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Smileys/Pile%20of%20Poo.png"},
-            {"name": "Helmet", "img": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Closed%20Steel%20Helmet.png"},
-            {"name": "Diamond", "img": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Gem%20Stone.png"}
+            {"name": "Pepe", "img": "nft-icons/pepe.png"}, 
+            {"name": "Candy", "img": "nft-icons/candy.png"},
+            {"name": "Poo", "img": "nft-icons/poo.png"},
+            {"name": "Helmet", "img": "nft-icons/helmet.png"}
         ]
 
         balance = 100.0
@@ -59,7 +58,10 @@
 
         def create_card(icon):
             card = html.DIV(Class="h-[120px] flex items-center justify-center p-2")
-            card <= html.IMG(src=icon['img'], Class="w-16 h-16 shadow-lg")
+            # Добавляем onerror на случай, если ты забудешь загрузить какой-то файл
+            card <= html.IMG(src=icon['img'], 
+                             Class="w-16 h-16 shadow-lg", 
+                             onerror="this.src='https://via.placeholder.com/64?text=ERR'")
             return card
 
         def fill():
